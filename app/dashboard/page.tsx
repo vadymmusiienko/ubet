@@ -9,6 +9,12 @@ export default async function Dashboard() {
     // Example usage of getKindeServerSession
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+
+    // Ensure user is valid before rendering properties
+    if (!user) {
+        return <div>Loading user data...</div>;
+    }
+
     return (
         <>
             <div>This is Dashboard</div>
