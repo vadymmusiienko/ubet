@@ -1,6 +1,7 @@
+import { NextRequest } from "next/server";
 import { withAuth } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function middleware(req) {
+export default function middleware(req: NextRequest) {
     return withAuth(req);
 }
 
