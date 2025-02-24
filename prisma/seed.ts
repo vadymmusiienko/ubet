@@ -8,11 +8,12 @@ async function main() {
         where: { username: "admin" },
         update: {},
         create: {
+            id: "testid",
             firstName: "John",
             lastName: "Doe",
             username: "admin",
             email: "admin@gmail.com",
-            password: "chirpchirp", // Should be hashed in production
+            picture: "linktoapicture",
         },
     });
 
