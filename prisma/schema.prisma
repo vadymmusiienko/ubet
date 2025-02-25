@@ -15,12 +15,12 @@ datasource db {
 
 // Auth tables 
 model User {
-  id        String  @id @default(cuid())
-  firstName String?
-  lastName  String?
+  id        String  @id
+  firstName String
+  lastName  String
   username  String  @unique
   email     String  @unique
-  password  String //Hashed password
+  picture   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
