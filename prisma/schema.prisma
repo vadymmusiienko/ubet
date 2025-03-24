@@ -13,15 +13,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Auth tables 
 model User {
-  id        String  @id
+  id        String  @id @default(uuid())
   firstName String
   lastName  String
   username  String  @unique
   email     String  @unique
   picture   String?
+  goals     Goal[]
+
+  bets                Bet[]
+  accountabilityGoals Goal[] @relation("GoalAccountabilityPartner")
+
+  friendshipsSent     Friendships[] @relation("FriendshipSender")
+  friendshipsReceived Friendships[] @relation("FriendshipReceiver")
+
+  friendRequestsSent     FriendRequest[] @relation("SentRequests")
+  friendRequestsReceived FriendRequest[] @relation("ReceivedRequests")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+model Goal {
+  id                      String     @id @default(uuid())
+  title                   String
+  description             String
+  stakes                  Float
+  accountabilityPartner   User?      @relation("GoalAccountabilityPartner", fields: [accountabilityPartnerId], references: [id])
+  accountabilityPartnerId String?
+  creatorId               String
+  creator                 User       @relation(fields: [creatorId], references: [id])
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  status                  GoalStatus @default(NOT_STARTED)
+
+  Bet Bet[]
+}
+
+model Friendships {
+  id      String @id @default(uuid())
+  user1Id String
+  user2Id String
+
+  user1 User @relation("FriendshipSender", fields: [user1Id], references: [id])
+  user2 User @relation("FriendshipReceiver", fields: [user2Id], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model FriendRequest {
+  id         String              @id @default(uuid())
+  fromUserId String
+  toUserId   String
+  status     FriendRequestStatus @default(PENDING)
+  createdAt  DateTime            @default(now())
+
+  fromUser User @relation("SentRequests", fields: [fromUserId], references: [id])
+  toUser   User @relation("ReceivedRequests", fields: [toUserId], references: [id])
+
+  @@unique([fromUserId, toUserId])
+}
+
+enum BetType {
+  ON
+  AGAINST
+}
+
+model Bet {
+  id        String   @id @default(uuid())
+  amount    Float
+  goal      Goal     @relation(fields: [goalId], references: [id])
+  goalId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  betType   BetType
 }
