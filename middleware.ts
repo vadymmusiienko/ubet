@@ -7,5 +7,5 @@ export default function middleware(req: NextRequest) {
 
 // Put all protected routes here
 export const config = {
-    matcher: ["/dashboard"],
+    matcher: ["/dashboard", "/profile", "/settings"],
 };

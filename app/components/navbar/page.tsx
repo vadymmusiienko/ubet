@@ -17,34 +17,46 @@ export default async function Navbar() {
             {/* Left side icons */}
 
             <div className="flex space-x-8">
-                <a href="/home" className="text-white hover:text-blue-400 transition">
+                <a
+                    href="/home"
+                    className="text-white hover:text-blue-400 transition"
+                >
                     <Home className="w-6 h-6" />
                 </a>
 
-                <a href="/friends" className="text-white hover:text-blue-400 transition">
+                <a
+                    href="/friends"
+                    className="text-white hover:text-blue-400 transition"
+                >
                     <Users className="w-6 h-6" />
                 </a>
 
-                <a href="/notifications" className="text-white hover:text-blue-400 transition">
+                <a
+                    href="/notifications"
+                    className="text-white hover:text-blue-400 transition"
+                >
                     <Bell className="w-6 h-6" />
                 </a>
-
             </div>
 
             {/* Right side Auth buttons */}
             <div className="flex space-x-4">
                 {!isLoggedIn && (
                     <>
-                        <LoginLink className="text-white hover:text-blue-400">Log in</LoginLink>
-                        <RegisterLink className="text-white hover:text-blue-400">Register</RegisterLink>
+                        <LoginLink className="text-white hover:text-blue-400">
+                            Log in
+                        </LoginLink>
+                        <RegisterLink className="text-white hover:text-blue-400">
+                            Register
+                        </RegisterLink>
                     </>
                 )}
                 {isLoggedIn && (
-                    <LogoutLink className="text-white hover:text-blue-400">Log out</LogoutLink>
+                    <LogoutLink className="text-white hover:text-blue-400">
+                        Log out
+                    </LogoutLink>
                 )}
             </div>
         </nav>
     );
 }
-
-
