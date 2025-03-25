@@ -1,5 +1,7 @@
 import { FaUserCircle } from "react-icons/fa";
+import MyGoalCard from "./components/myGoalCard";
 
+// TODO: Aneesh - Make this component access the database and display all of the user's goals
 export default function CreateGoal() {
     return (
         <div className="min-h-screen flex flex-col items-center p-6">
@@ -24,27 +26,8 @@ export default function CreateGoal() {
                 </div>
 
                 {/* Goals Section */}
-                <div className="w-1/2 mx-4 space-y-4">
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-lg font-bold">My Goal</h2>
-                        <p className="text-sm text-gray-500">
-                            Jan 20th, 2025 - Feb 3rd, 2025
-                        </p>
-                        <p className="mt-2">
-                            Have a screentime of less than 5 hours a day
-                        </p>
-                        <button className="text-blue-500 text-sm mt-2">
-                            See more details →
-                        </button>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-lg font-bold">John Smith’s Goal</h2>
-                        <p className="text-sm text-gray-500">
-                            Jan 5th, 2025 - Feb 5th, 2025
-                        </p>
-                        <p className="mt-2">Work out everyday for a month</p>
-                    </div>
-                </div>
+                <MyGoalCard />
+                {/* Aneesh - Your code should go here (you will probably want to use "map" function) */}
 
                 {/* Sidebar */}
                 <div className="w-1/4 space-y-4">

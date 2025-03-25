@@ -20,7 +20,7 @@ model User {
   bets Bet[]
   accountabilityGoals Goal[] @relation("GoalAccountabilityPartner")
   creatorGoals        Goal[] @relation("GoalCreator")
-  participants GoalParticipant[]
+  participants        GoalParticipant[]
 
 
   createdAt DateTime @default(now())
@@ -57,7 +57,7 @@ model Goal {
   Bet Bet[]
 
   // Participants
-  participants GoalParticipant[]
+  participants            GoalParticipant[]
 }
 
 
