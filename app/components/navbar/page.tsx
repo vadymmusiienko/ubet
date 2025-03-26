@@ -56,13 +56,13 @@ export default async function Navbar() {
                     )}
 
                     {/* Right side Auth buttons */}
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-4 justify-items-end">
                         {!isLoggedIn && (
                             <>
                                 <LoginLink className="text-white hover:text-blue-400 transition">
                                     Log in
                                 </LoginLink>
-                                <RegisterLink className="text-white hover:text-blue-400 transition px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700">
+                                <RegisterLink className="text-white hover:text-blue-400 transition">
                                     Register
                                 </RegisterLink>
                             </>
