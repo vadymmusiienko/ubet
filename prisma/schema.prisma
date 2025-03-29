@@ -17,11 +17,10 @@ model User {
   picture   String?
 
   // Relationships
-  bets Bet[]
-  accountabilityGoals Goal[] @relation("GoalAccountabilityPartner")
-  creatorGoals        Goal[] @relation("GoalCreator")
+  bets                Bet[]
+  accountabilityGoals Goal[]            @relation("GoalAccountabilityPartner")
+  creatorGoals        Goal[]            @relation("GoalCreator")
   participants        GoalParticipant[]
-
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -36,33 +35,32 @@ enum GoalStatus {
 }
 
 model Goal {
-  id                      String     @id @default(uuid())
+  id                      String   @id @default(uuid())
   title                   String
   description             String
-  stakes                  Int        @default(0)
-  isGroupGoal             Boolean    @default(false)
-  accountabilityPartner   User?      @relation("GoalAccountabilityPartner", fields: [accountabilityPartnerId], references: [id], onDelete: SetNull)
+  stakes                  Int      @default(0)
+  isGroupGoal             Boolean  @default(false)
+  accountabilityPartner   User?    @relation("GoalAccountabilityPartner", fields: [accountabilityPartnerId], references: [id], onDelete: SetNull)
   accountabilityPartnerId String?
   creatorId               String
-  creator                 User       @relation("GoalCreator", fields: [creatorId], references: [id], onDelete: Cascade)
-  createdAt               DateTime   @default(now())
-  updatedAt               DateTime   @updatedAt
+  creator                 User     @relation("GoalCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 
   // Start and end dates
-  startDate               DateTime
-  endDate                 DateTime
+  startDate DateTime
+  endDate   DateTime
 
   // Goal status and bets
-  status                  GoalStatus @default(NOT_STARTED)
-  Bet Bet[]
+  status             GoalStatus @default(NOT_STARTED)
+  Bet                Bet[]
 
   // Participants
-  participants            GoalParticipant[]
+  participants GoalParticipant[]
 }
 
-
 enum BetType {
-  ON
+  FOR
   AGAINST
 }
 
@@ -78,10 +76,10 @@ model Bet {
 }
 
 model GoalParticipant {
-  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  goal       Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
-  goalId     String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  goal   Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goalId String
 
   createdAt DateTime @default(now())
 

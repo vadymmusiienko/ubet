@@ -29,7 +29,7 @@ export default async function Navbar() {
                     {isLoggedIn && (
                         <div className="flex space-x-8">
                             <Link
-                                href="/friends"
+                                href="/bet"
                                 className="text-white hover:text-blue-400 transition"
                             >
                                 <Users className="w-6 h-6" />
