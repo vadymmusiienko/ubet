@@ -1,77 +1,55 @@
-import { prisma } from "@/lib/prisma";
+"use client";
+
+import { useEffect, useState } from "react";
 import AddFriendButton from "./components/AddFriendButton";
 import RespondToFriendRequest from "./components/RespondToFriendRequest";
 
-const CURRENT_USER_ID = "testid";
+const CURRENT_USER_ID = "testid5";
 
-export default async function FriendsPage() {
-  const sentRequests = await prisma.friendRequest.findMany({
-    where: { senderId: CURRENT_USER_ID },
-    select: { receiverId: true },
-  });
+export default function FriendsPage() {
+  const [incomingRequests, setIncomingRequests] = useState<any[]>([]);
+  const [suggested, setSuggested] = useState<any[]>([]);
+  const [friends, setFriends] = useState<any[]>([]);
 
-  const receivedRequests = await prisma.friendRequest.findMany({
-    where: { receiverId: CURRENT_USER_ID },
-    select: { senderId: true },
-  });
+  const loadAll = async () => {
+    const [reqs, sugg, fr] = await Promise.all([
+      fetch("/api/friend-request/incoming").then((r) => r.json()),
+      fetch("/api/friend-request/suggested").then((r) => r.json()),
+      fetch("/api/friends/list").then((r) => r.json()),
+    ]);
+    setIncomingRequests(reqs);
+    setSuggested(sugg);
+    setFriends(fr);
+  };
 
-  const excludedIds = [
-    CURRENT_USER_ID,
-    ...sentRequests.map((r) => r.receiverId),
-    ...receivedRequests.map((r) => r.senderId),
-  ];
-
-  const suggested = await prisma.user.findMany({
-    where: {
-      id: { not: CURRENT_USER_ID, notIn: excludedIds },
-    },
-    take: 5,
-  });
-
-  const incomingRequests = await prisma.friendRequest.findMany({
-    where: {
-      receiverId: CURRENT_USER_ID,
-      status: "PENDING",
-    },
-    include: { sender: true },
-  });
-
-  const friends = await prisma.friend.findMany({
-    where: { userId: CURRENT_USER_ID },
-  });
-
-  const friendIds = friends.map((f) => f.friendId);
-
-  const friendUsers = await prisma.user.findMany({
-    where: { id: { in: friendIds } },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      username: true,
-    },
-  });
-
-  const friendMap = Object.fromEntries(
-    friendUsers.map((user) => [user.id, user])
-  );
+  useEffect(() => {
+    loadAll();
+  }, []);
 
   return (
     <div className="space-y-6 p-6">
       <h1 className="text-2xl font-bold">Friends System Test Page</h1>
 
       <section>
-        <h2 className="text-xl font-semibold mb-2">Incoming Friend Requests</h2>
+        <h2 className="text-xl font-semibold mb-2">Incoming Requests</h2>
         {incomingRequests.length === 0 ? (
           <p>No pending requests.</p>
         ) : (
           incomingRequests.map((req) => (
-            <div key={req.id} className="flex items-center justify-between">
+            <div key={req.id} className="flex justify-between items-center">
               <span>
-                {req.sender.firstName} {req.sender.lastName} (
+                {req.sender.firstName} {req.sender.lastName} (@
                 {req.sender.username})
               </span>
-              <RespondToFriendRequest requestId={req.id} />
+              <RespondToFriendRequest
+                requestId={req.id}
+                onResponded={() => {
+                  setIncomingRequests((prev) =>
+                    prev.filter((r) => r.id !== req.id)
+                  );
+                  loadAll();
+                }}
+              />
             </div>
           ))
         )}
@@ -80,11 +58,17 @@ export default async function FriendsPage() {
       <section>
         <h2 className="text-xl font-semibold mb-2">Suggested Friends</h2>
         {suggested.map((user) => (
-          <div key={user.id} className="flex items-center justify-between p-2">
+          <div key={user.id} className="flex justify-between items-center">
             <span>
               {user.firstName} {user.lastName} (@{user.username})
             </span>
-            <AddFriendButton senderId={CURRENT_USER_ID} receiverId={user.id} />
+            <AddFriendButton
+              senderId={CURRENT_USER_ID}
+              receiverId={user.id}
+              onSent={() =>
+                setSuggested((prev) => prev.filter((u) => u.id !== user.id))
+              }
+            />
           </div>
         ))}
       </section>
@@ -92,19 +76,14 @@ export default async function FriendsPage() {
       <section>
         <h2 className="text-xl font-semibold mb-2">Friends List</h2>
         {friends.length === 0 ? (
-          <p>You don’t have any friends yet.</p>
+          <p>No friends yet.</p>
         ) : (
           <ul>
-            {friends.map((f) => {
-              const friend = friendMap[f.friendId];
-              return (
-                <li key={f.friendId}>
-                  {friend
-                    ? `${friend.firstName} ${friend.lastName} (@${friend.username})`
-                    : "Unknown user"}
-                </li>
-              );
-            })}
+            {friends.map((f) => (
+              <li key={f.id}>
+                {f.firstName} {f.lastName} (@{f.username})
+              </li>
+            ))}
           </ul>
         )}
       </section>

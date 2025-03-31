@@ -5,14 +5,17 @@ export async function sendFriendRequest(senderId: string, receiverId: string) {
     body: JSON.stringify({ senderId, receiverId }),
   });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Failed to send friend request");
-  return data;
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Error");
+  }
+
+  return res.json();
 }
 
 export async function respondToFriendRequest(
   requestId: string,
-  action: "ACCEPTED" | "DECLINED"
+  action: "ACCEPTED" | "DECLINED" | "BLOCKED"
 ) {
   const res = await fetch("/api/friend-request/respond", {
     method: "POST",
@@ -20,7 +23,10 @@ export async function respondToFriendRequest(
     body: JSON.stringify({ requestId, action }),
   });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Failed to respond to request");
-  return data;
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Error");
+  }
+
+  return res.json();
 }

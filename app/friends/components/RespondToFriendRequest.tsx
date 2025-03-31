@@ -1,30 +1,37 @@
 "use client";
 
-import { respondToFriendRequest } from "@/app/utils/friendRequests";
 import { useState } from "react";
+import { respondToFriendRequest } from "@/app/utils/friendRequests";
 
 export default function RespondToFriendRequest({
   requestId,
+  onResponded,
 }: {
   requestId: string;
+  onResponded: () => void;
 }) {
-  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = async (action: "ACCEPTED" | "DECLINED") => {
+  const handleAction = async (action: "ACCEPTED" | "DECLINED") => {
+    setLoading(true);
     try {
       await respondToFriendRequest(requestId, action);
-      setSent(true);
-    } catch (err: any) {
-      alert(err.message);
+      onResponded();
+    } catch (err) {
+      alert("Failed to respond");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (sent) return;
-
   return (
     <div className="flex gap-2">
-      <button onClick={() => handleSend("ACCEPTED")}>Accept</button>
-      <button onClick={() => handleSend("DECLINED")}>Deny</button>
+      <button onClick={() => handleAction("ACCEPTED")} disabled={loading}>
+        Accept
+      </button>
+      <button onClick={() => handleAction("DECLINED")} disabled={loading}>
+        Deny
+      </button>
     </div>
   );
 }

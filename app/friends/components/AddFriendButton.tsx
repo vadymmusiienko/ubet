@@ -1,27 +1,34 @@
 "use client";
 
-import { sendFriendRequest } from "@/app/utils/friendRequests";
 import { useState } from "react";
+import { sendFriendRequest } from "@/app/utils/friendRequests";
 
 export default function AddFriendButton({
   senderId,
   receiverId,
+  onSent,
 }: {
   senderId: string;
   receiverId: string;
+  onSent: () => void;
 }) {
-  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = async () => {
+  const handleClick = async () => {
+    setLoading(true);
     try {
       await sendFriendRequest(senderId, receiverId);
-      setSent(true);
-    } catch (err: any) {
-      alert(err.message);
+      onSent(); // remove from suggested
+    } catch (err) {
+      alert("Failed to send request");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (sent) return <p>Request Sent</p>;
-
-  return <button onClick={handleSend}>Send Friend Request</button>;
+  return (
+    <button onClick={handleClick} disabled={loading}>
+      Send Friend Request
+    </button>
+  );
 }
