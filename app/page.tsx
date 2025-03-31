@@ -1,6 +1,11 @@
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
+import PeopleCard from "./feed/components/peopleCard";
+import ProfileCard from "./feed/components/profileCard";
+import GoalCard from "./feed/components/goalCard";
+import TrendingCard from "./feed/components/trendingCard";
+import PeopleGoalCard from "./feed/components/peoplegoalCard";
 
 export default async function Home() {
     const { getUser } = getKindeServerSession();
@@ -11,25 +16,40 @@ export default async function Home() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center">
-            <main className="flex w-full flex-1 flex-col bg-gray-100">
-                <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
-                    <h1 className="text-6xl font-bold italic mb-6">UBet</h1>
-                    <h2 className="text-4xl font-bold mb-6">
-                        The goal-setting app that
-                        <br />
-                        holds you accountable.
-                    </h2>
-                    <p className="text-xl mb-8">
-                        You know the version of you that you want to be.
-                        <br />
-                        We&apos;ll help get you there.
-                    </p>
-                    <div className="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 px-12 rounded-full text-xl transition duration-300">
-                        <RegisterLink>Sign Up</RegisterLink>
+        <>
+            <div className="flex min-h-screen flex-col">
+                <main className="flex w-full flex-1 flex-col bg-gray-100 items-center">
+                    <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
+                        <h1 className="text-6xl font-bold italic mb-6">UBet</h1>
+                        <h2 className="text-4xl font-bold mb-6">
+                            The goal-setting app that
+                            <br />
+                            holds you accountable.
+                        </h2>
+                        <p className="text-xl mb-8">
+                            You know the version of you that you want to be.
+                            <br />
+                            We&apos;ll help get you there.
+                        </p>
+                        <div className="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 px-12 rounded-full text-xl transition duration-300">
+                            <RegisterLink>Sign Up</RegisterLink>
+                        </div>
                     </div>
+                </main>
+            </div>
+            <div className="flex items-start gap-20 mt-10">
+                <ProfileCard></ProfileCard>
+                <div className="flex flex-col gap-5">
+                    <GoalCard></GoalCard>
+                    <PeopleGoalCard></PeopleGoalCard>                
                 </div>
-            </main>
-        </div>
+                <div className="flex flex-col gap-3">
+                <PeopleCard></PeopleCard>
+                <TrendingCard></TrendingCard>
+                </div>
+            </div>
+          
+
+        </>
     );
 }
