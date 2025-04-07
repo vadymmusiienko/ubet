@@ -19,7 +19,7 @@ export default function AddFriendButton({
       onSent();
     } catch (err) {
       console.error("Failed to send request:", err);
-      alert("Failed to send request: ");
+      alert("Failed to send request");
     } finally {
       setLoading(false);
     }
