@@ -1,4 +1,3 @@
-//TODO: Aneesh - Make this component dynamic by passing in props and using them to display the goal details
 interface GoalCardProps {
     title: string;
     startDate: string;
