@@ -7,7 +7,11 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "postinstall": "npx prisma generate"
+        "postinstall": "npx prisma generate",
+        "db:start": "docker-compose up -d",
+        "db:stop": "docker-compose down",
+        "db:reset": "npm run db:stop && npm run db:start && npx prisma migrate reset --force",
+        "db:studio": "npx prisma studio"
     },
     "prisma": {
         "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
