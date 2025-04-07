@@ -26,7 +26,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
             {/* Main Content */}
             <div className="flex flex-col md:flex-row w-full max-w-5xl mt-6 gap-4">
                 {/* Profile Card */}
-                <div className="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-md">
+                <div className="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-md max-h-56">
                     <div className="flex flex-col items-center">
                         <FaUserCircle size={50} />
                         <h2 className="text-lg font-semibold">

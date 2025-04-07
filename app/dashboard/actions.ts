@@ -23,7 +23,7 @@ interface GoalsResult {
 // Fetch goals with error handling and pagination
 export async function getGoals(
     page = 1,
-    pageSize = 5
+    pageSize = 3 //TODO - change to 4?
 ): Promise<GoalsResult> {
     try {
         // Get total count for pagination

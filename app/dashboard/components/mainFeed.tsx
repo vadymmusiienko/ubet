@@ -13,7 +13,7 @@ export default function MainFeed({ page, feedType }: MainFeedProps) {
         <div className="w-full md:w-1/2 space-y-4">
             {feedType === "engagements" ? (
                 <Suspense fallback={<LoadingGoals />}>
-                    <MyGoals page={page} />
+                    <MyGoals page={page} feedType={feedType} />
                 </Suspense>
             ) : (
                 <FeedGoalCard />

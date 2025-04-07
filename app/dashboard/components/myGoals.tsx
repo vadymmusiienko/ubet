@@ -1,12 +1,13 @@
 import { getGoals } from "../actions";
 import MyGoalCard from "./myGoalCard";
-import ClientPaginationControls from "./ClientPaginationControl";
+import ClientPaginationControls from "./clientPaginationControl";
 
 interface GoalsProps {
     page: number;
+    feedType: string;
 }
 
-export default async function MyGoals({ page }: GoalsProps) {
+export default async function MyGoals({ page, feedType}: GoalsProps) {
     const { goals, pagination, error } = await getGoals(page);
 
     if (error) {
@@ -46,6 +47,7 @@ export default async function MyGoals({ page }: GoalsProps) {
             <ClientPaginationControls
                 currentPage={pagination.currentPage}
                 totalPages={pagination.totalPages}
+                feedType={feedType}
             />
         </>
     );
