@@ -1,11 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
 export async function POST(req: Request) {
+  const senderId = "testid6";
   const body = await req.json();
-  const { senderId, receiverId } = body;
+  const { receiverId } = body;
 
   if (!senderId || !receiverId || senderId === receiverId) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });

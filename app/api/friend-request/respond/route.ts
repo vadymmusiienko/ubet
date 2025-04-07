@@ -1,13 +1,12 @@
-import { PrismaClient, RequestStatus } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { RequestStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { requestId, action } = body;
 
-  if (!requestId || !["ACCEPTED", "DECLINED"].includes(action)) {
+  if (!requestId || !["ACCEPTED", "DECLINED", "BLOCKED"].includes(action)) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 

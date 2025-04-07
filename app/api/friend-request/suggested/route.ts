@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-const CURRENT_USER_ID = "testid5";
-
 export async function GET() {
+  const CURRENT_USER_ID = "testid6";
+
   const sent = await prisma.friendRequest.findMany({
     where: { senderId: CURRENT_USER_ID },
     select: { receiverId: true },

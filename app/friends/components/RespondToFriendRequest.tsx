@@ -12,12 +12,13 @@ export default function RespondToFriendRequest({
 }) {
   const [loading, setLoading] = useState(false);
 
-  const handleAction = async (action: "ACCEPTED" | "DECLINED") => {
+  const handleAction = async (action: "ACCEPTED" | "DECLINED" | "BLOCKED") => {
     setLoading(true);
     try {
       await respondToFriendRequest(requestId, action);
       onResponded();
     } catch (err) {
+      console.error("Failed to respond to friend request:", err);
       alert("Failed to respond");
     } finally {
       setLoading(false);
@@ -26,11 +27,26 @@ export default function RespondToFriendRequest({
 
   return (
     <div className="flex gap-2">
-      <button onClick={() => handleAction("ACCEPTED")} disabled={loading}>
+      <button
+        className="px-3 py-1 rounded-xl text-sm font-medium bg-[#339b59] text-white"
+        onClick={() => handleAction("ACCEPTED")}
+        disabled={loading}
+      >
         Accept
       </button>
-      <button onClick={() => handleAction("DECLINED")} disabled={loading}>
+      <button
+        className="px-3 py-1 rounded-xl text-sm font-medium bg-[#c24747] text-white"
+        onClick={() => handleAction("DECLINED")}
+        disabled={loading}
+      >
         Deny
+      </button>
+      <button
+        className="px-3 py-1 rounded-xl text-sm font-medium bg-[#191927] text-white"
+        onClick={() => handleAction("BLOCKED")}
+        disabled={loading}
+      >
+        Block
       </button>
     </div>
   );

@@ -1,8 +1,8 @@
-export async function sendFriendRequest(senderId: string, receiverId: string) {
+export async function sendFriendRequest(receiverId: string) {
   const res = await fetch("/api/friend-request", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ senderId, receiverId }),
+    body: JSON.stringify({ receiverId }),
   });
 
   if (!res.ok) {
