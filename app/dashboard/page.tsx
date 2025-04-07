@@ -1,8 +1,23 @@
 import { FaUserCircle } from "react-icons/fa";
 import MyGoalCard from "./components/myGoalCard";
+import { PrismaClient } from '@prisma/client'
 
-// TODO: Aneesh - Make this component access the database and display all of the user's goals
-export default function CreateGoal() {
+const db = new PrismaClient()
+
+// TODO: Aneesh - Make this component access the database and display  all of the user's goals
+export default async function CreateGoal() 
+    {
+        const goals = await db.goal.findMany(
+        {
+            select: 
+            {
+                title: true,
+                description: true,
+                startDate: true,
+                endDate: true,
+            }
+        })
+              
     return (
         <div className="min-h-screen flex flex-col items-center p-6">
             {/* Main Content */}
@@ -26,7 +41,17 @@ export default function CreateGoal() {
                 </div>
 
                 {/* Goals Section */}
-                <MyGoalCard />
+                <div className="w-1/2 mx-4 space-y-4">
+                {goals.map((goal) => (
+                    <MyGoalCard
+                    title = {goal.title}
+                    startDate = {goal.startDate.toDateString()}
+                    endDate = {goal.endDate.toDateString()}
+                    description = {goal.description}
+                    />
+                ))}
+                </div>
+
                 {/* Aneesh - Your code should go here (you will probably want to use "map" function) */}
 
                 {/* Sidebar */}
