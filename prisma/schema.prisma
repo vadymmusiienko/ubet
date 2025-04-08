@@ -66,6 +66,11 @@ model Goal {
   participants            GoalParticipant[]
 }
 
+enum BetType {
+  FOR
+  AGAINST
+}
+
 model Bet {
   id        String   @id @default(uuid())
   amount    Float
@@ -78,13 +83,12 @@ model Bet {
 }
 
 model GoalParticipant {
-  userId    String
-  goalId    String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  goal   Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goalId String
   createdAt DateTime @default(now())
-  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, goalId])
+  @@id([userId, goalId]) // Composite primary key to prevent duplicate entries
 }
 
 enum RequestStatus {
@@ -99,9 +103,4 @@ enum GoalStatus {
   IN_PROGRESS
   COMPLETED
   FAILED
-}
-
-enum BetType {
-  ON
-  AGAINST
 }

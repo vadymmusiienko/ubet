@@ -1,4 +1,9 @@
-import { PrismaClient, GoalStatus, BetType } from "@prisma/client";
+import {
+    PrismaClient,
+    GoalStatus,
+    BetType,
+    RequestStatus,
+} from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -57,6 +62,65 @@ async function main() {
     ]);
 
     console.log(`Created ${users.length} users`);
+
+    // Create friendships and friend requests
+    const friendships = await Promise.all([
+        // John and Jane are friends
+        prisma.friend.create({
+            data: {
+                userId: "user1",
+                friendId: "user2",
+            },
+        }),
+        prisma.friend.create({
+            data: {
+                userId: "user2",
+                friendId: "user1",
+            },
+        }),
+        // John and Bob are friends
+        prisma.friend.create({
+            data: {
+                userId: "user1",
+                friendId: "user4",
+            },
+        }),
+        prisma.friend.create({
+            data: {
+                userId: "user4",
+                friendId: "user1",
+            },
+        }),
+        // Alice and Jane are friends
+        prisma.friend.create({
+            data: {
+                userId: "user3",
+                friendId: "user2",
+            },
+        }),
+        prisma.friend.create({
+            data: {
+                userId: "user2",
+                friendId: "user3",
+            },
+        }),
+    ]);
+
+    console.log(`Created ${friendships.length} friendships`);
+
+    // Create friend requests
+    const friendRequests = await Promise.all([
+        // Bob sent a request to Alice
+        prisma.friendRequest.create({
+            data: {
+                senderId: "user4",
+                receiverId: "user3",
+                status: RequestStatus.PENDING,
+            },
+        }),
+    ]);
+
+    console.log(`Created ${friendRequests.length} friend requests`);
 
     // Create individual goals
     const individualGoals = await Promise.all([
@@ -187,7 +251,7 @@ async function main() {
                 amount: 50,
                 goalId: individualGoals[0].id,
                 userId: "user2",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
         prisma.bet.create({
@@ -205,7 +269,7 @@ async function main() {
                 amount: 30,
                 goalId: individualGoals[1].id,
                 userId: "user1",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
         prisma.bet.create({
@@ -223,7 +287,7 @@ async function main() {
                 amount: 100,
                 goalId: individualGoals[2].id,
                 userId: "user4",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
 
@@ -233,7 +297,7 @@ async function main() {
                 amount: 40,
                 goalId: groupGoals[0].id,
                 userId: "user4",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
 
@@ -243,7 +307,7 @@ async function main() {
                 amount: 25,
                 goalId: groupGoals[1].id,
                 userId: "user1",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
 
@@ -253,7 +317,7 @@ async function main() {
                 amount: 45,
                 goalId: completedGoal.id,
                 userId: "user2",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
         prisma.bet.create({
@@ -261,7 +325,7 @@ async function main() {
                 amount: 30,
                 goalId: completedGoal.id,
                 userId: "user1",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
 
@@ -271,7 +335,7 @@ async function main() {
                 amount: 60,
                 goalId: failedGoal.id,
                 userId: "user1",
-                betType: BetType.ON,
+                betType: BetType.FOR,
             },
         }),
         prisma.bet.create({
