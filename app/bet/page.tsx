@@ -1,3 +1,4 @@
+// TODO: make it dynamic (don't hardcode userId and goalId)
 import BetForm from "./components/bet-form";
 
 export default function BetPage() {
