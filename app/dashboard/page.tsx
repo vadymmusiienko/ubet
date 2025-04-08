@@ -1,6 +1,6 @@
 import { FaUserCircle } from "react-icons/fa";
-import FeedToggle from "./components/FeedToggle";
-import Feed from "./components/Feed";
+import FeedToggle from "./components/feed-toggle";
+import Feed from "./components/feed";
 
 interface DashboardProps {
     searchParams: Promise<{

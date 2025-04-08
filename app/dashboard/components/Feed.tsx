@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import FeedGoals from "./FeedGoals";
-import MyGoals from "./MyGoals";
-import LoadingGoals from "./LoadingFeed";
+import FeedGoals from "./feed-goals";
+import MyGoals from "./my-goals";
+import LoadingGoals from "./loading-feed";
 
 interface FeedProps {
     page: number;
