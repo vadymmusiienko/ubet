@@ -1,6 +1,6 @@
 import { FaUserCircle } from "react-icons/fa";
-import FeedToggle from "./components/feedToggle";
-import MainFeed from "./components/mainFeed";
+import FeedToggle from "./components/FeedToggle";
+import Feed from "./components/Feed";
 
 interface DashboardProps {
     searchParams: Promise<{
@@ -42,7 +42,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
                         </button>
                     </div>
                 </div>
-                <MainFeed page={page} feedType={feedType} />
+                <Feed page={page} feedType={feedType} />
                 {/* Sidebar */}
                 <div className="w-full md:w-1/4 space-y-4">
                     <div className="bg-white p-4 rounded-lg shadow-md">

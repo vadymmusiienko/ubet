@@ -5,7 +5,7 @@ interface GoalCardProps {
     description: string;
 }
 
-export default function MyGoalCard({
+export default function GoalCard({
     title,
     startDate,
     endDate,

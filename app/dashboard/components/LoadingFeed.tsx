@@ -1,5 +1,5 @@
 // Loading component for suspense boundary
-export default function LoadingGoals() {
+export default function LoadingFeed() {
     return (
         <div className="w-full space-y-4">
             {[1, 2, 3].map((i) => (
