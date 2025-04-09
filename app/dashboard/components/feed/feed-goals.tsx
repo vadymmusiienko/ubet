@@ -1,6 +1,6 @@
-import { getGoals } from "../actions";
+import { getGoals } from "../../actions";
 import GoalCard from "./goal-card";
-import ClientPaginationControls from "./feed/client-pagination-controls";
+import ClientPaginationControls from "./client-pagination-controls";
 
 interface GoalsProps {
     page: number;
