@@ -28,6 +28,13 @@ export default async function Navbar() {
                     {/* Center icons - only visible when logged in */}
                     {isLoggedIn && (
                         <div className="flex space-x-8">
+                            {/* TODO: this is temporary */}
+                            <Link
+                                href="/friends"
+                                className="text-white hover:text-blue-400 transition"
+                            >
+                                FRIENDS
+                            </Link>
                             <Link
                                 href="/bet"
                                 className="text-white hover:text-blue-400 transition"
