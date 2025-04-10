@@ -1,6 +1,8 @@
 import { FaUserCircle } from "react-icons/fa";
 import FeedToggle from "./components/feed/feed-toggle";
 import Feed from "./components/feed/feed-main";
+import PeopleYouMayKnow from "./components/right-sidebar/people-you-may-know";
+import YourFriends from "./components/right-sidebar/your-friends";
 
 interface DashboardProps {
     searchParams: Promise<{
@@ -25,7 +27,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
             </div>
             {/* Main Content */}
             <div className="flex flex-col md:flex-row w-full max-w-5xl mt-6 gap-4">
-                {/* Profile Card */}
+                {/* Left Sidebar - Profile Card */}
                 <div className="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-md max-h-56">
                     <div className="flex flex-col items-center">
                         <FaUserCircle size={50} />
@@ -43,26 +45,10 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
                     </div>
                 </div>
                 <Feed page={page} feedType={feedType} />
-                {/* Sidebar */}
+                {/* Right Sidebar - friends/suggestions*/}
                 <div className="w-full md:w-1/4 space-y-4">
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-lg font-bold">
-                            People you may know
-                        </h2>
-                        <ul className="text-sm mt-2">
-                            <li>Angie Zhou (@angiezh)</li>
-                            <li>John Smith (@johnsmith)</li>
-                            <li>Jane Doe (@janedoe)</li>
-                        </ul>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-lg font-bold">Trending Goals</h2>
-                        <ul className="text-sm mt-2">
-                            <li>Fitness challenge</li>
-                            <li>No phone challenge</li>
-                            <li>Romance challenge</li>
-                        </ul>
-                    </div>
+                    <PeopleYouMayKnow />
+                    <YourFriends />
                 </div>
             </div>
         </div>
