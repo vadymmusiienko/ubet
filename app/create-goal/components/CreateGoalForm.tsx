@@ -9,11 +9,46 @@ export default function CreateGoalForm() {
     const [endDate, setEndDate] = useState("");
     const [stakes, setStakes] = useState(25);
     const [canInviteFriends, setCanInviteFriends] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        const newErrors = {};
+        
+        if (!goalTitle.trim()) newErrors.goalTitle = "Goal title is required";
+        if (!startDate) newErrors.startDate = "Start date is required";
+        if (!endDate) newErrors.endDate = "End date is required";
+        
+        if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
+            newErrors.endDate = "End date must be after start date";
+        }
+        
+        if (stakes <= 0) newErrors.stakes = "Stakes must be greater than $0";
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            console.log("Form submitted successfully", {
+                goalType,
+                goalTitle,
+                goalDetails,
+                startDate,
+                endDate,
+                stakes,
+                canInviteFriends
+            });
+            // Push info to database here
+        }
+    };
 
     return (
-        <div className="space-y-4 w-full max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
             <div className="flex justify-center bg-gray-100 p-1 rounded-lg">
                 <button
+                    type="button"
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         goalType === "group"
                             ? "bg-blue-500 text-white shadow-md"
@@ -24,6 +59,7 @@ export default function CreateGoalForm() {
                     Group
                 </button>
                 <button
+                    type="button"
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         goalType === "individual"
                             ? "bg-blue-500 text-white shadow-md"
@@ -42,10 +78,15 @@ export default function CreateGoalForm() {
                 <input
                     type="text"
                     placeholder="Enter your goal title"
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all"
+                    className={`w-full p-2 border ${
+                        errors.goalTitle ? "border-red-500" : "border-gray-300"
+                    } rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all`}
                     value={goalTitle}
                     onChange={(e) => setGoalTitle(e.target.value)}
                 />
+                {errors.goalTitle && (
+                    <p className="text-red-500 text-xs mt-1">{errors.goalTitle}</p>
+                )}
             </div>
 
             <div>
@@ -68,10 +109,15 @@ export default function CreateGoalForm() {
                     </label>
                     <input
                         type="date"
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none"
+                        className={`w-full p-2 border ${
+                            errors.startDate ? "border-red-500" : "border-gray-300"
+                        } rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none`}
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     />
+                    {errors.startDate && (
+                        <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+                    )}
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -79,10 +125,15 @@ export default function CreateGoalForm() {
                     </label>
                     <input
                         type="date"
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none"
+                        className={`w-full p-2 border ${
+                            errors.endDate ? "border-red-500" : "border-gray-300"
+                        } rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none`}
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     />
+                    {errors.endDate && (
+                        <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>
+                    )}
                 </div>
             </div>
 
@@ -101,21 +152,32 @@ export default function CreateGoalForm() {
                     max="50"
                     value={stakes}
                     onChange={(e) => setStakes(parseInt(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                    className={`w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500 ${
+                        errors.stakes ? "outline outline-red-500" : ""
+                    }`}
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                     <span>$0</span>
                     <span>$50</span>
                 </div>
+                {errors.stakes && (
+                    <p className="text-red-500 text-xs mt-1">{errors.stakes}</p>
+                )}
             </div>
 
             <div className="flex flex-wrap gap-2">
                 <div className="flex flex-wrap gap-2 sm:flex-nowrap w-full justify-between">
                     <div className="flex flex-wrap gap-2">
-                        <button className="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-700 font-medium text-xs flex items-center transition-colors">
+                        <button
+                            type="button"
+                            className="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-700 font-medium text-xs flex items-center transition-colors"
+                        >
                             <span className="mr-1">+</span> Partner
                         </button>
-                        <button className="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-700 font-medium text-xs flex items-center transition-colors">
+                        <button
+                            type="button"
+                            className="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-700 font-medium text-xs flex items-center transition-colors"
+                        >
                             <span className="mr-1">+</span> Friends
                         </button>
                     </div>
@@ -135,9 +197,12 @@ export default function CreateGoalForm() {
                 </div>
             </div>
 
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition-colors text-center">
+            <button 
+                type="submit"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition-colors text-center"
+            >
                 Pay Now
             </button>
-        </div>
+        </form>
     );
 }
