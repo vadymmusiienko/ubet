@@ -63,7 +63,7 @@ export default async function ProfileCard() {
     const username = user?.username || "";
 
     return (
-        <div className="w-full sm:w-72 rounded-xl overflow-hidden shadow-lg bg-white text-center transition-all hover:shadow-xl">
+        <div className="w-full rounded-xl overflow-hidden shadow-lg bg-white text-center transition-all hover:shadow-xl">
             <div className="px-4 py-5">
                 <h1 className="font-bold text-2xl mb-3 text-gray-800">
                     {fullName}

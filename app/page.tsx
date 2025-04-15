@@ -1,11 +1,6 @@
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import PeopleCard from "./feed/components/peopleCard";
-import ProfileCard from "./dashboard/components/left-sidebar/profile-card";
-import GoalCard from "./feed/components/goalCard";
-import TrendingCard from "./feed/components/trendingCard";
-import PeopleGoalCard from "./feed/components/peoplegoalCard";
 
 export default async function Home() {
     const { getUser } = getKindeServerSession();
@@ -37,19 +32,6 @@ export default async function Home() {
                     </div>
                 </main>
             </div>
-            <div className="flex items-start gap-20 mt-10">
-                <ProfileCard></ProfileCard>
-                <div className="flex flex-col gap-5">
-                    <GoalCard></GoalCard>
-                    <PeopleGoalCard></PeopleGoalCard>                
-                </div>
-                <div className="flex flex-col gap-3">
-                <PeopleCard></PeopleCard>
-                <TrendingCard></TrendingCard>
-                </div>
-            </div>
-          
-
         </>
     );
 }

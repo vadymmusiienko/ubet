@@ -38,7 +38,7 @@ export default async function MyGoals() {
             return (
                 <div className="w-full p-8 bg-gray-50 border border-gray-200 rounded-lg text-center">
                     <p className="text-gray-600 mb-4">
-                        You don't have any goals yet.
+                        You don&apos;t have any goals yet.
                     </p>
                     <button className="bg-purple-700 hover:bg-purple-800 transition-colors text-white px-6 py-2 rounded-full focus:ring-2 focus:ring-purple-500 focus:outline-none">
                         Create Your First Goal
