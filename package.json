@@ -7,17 +7,23 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "postinstall": "npx prisma generate"
+        "postinstall": "npx prisma generate",
+        "db:start": "docker-compose up -d",
+        "db:stop": "docker-compose down",
+        "db:reset": "npm run db:stop && npm run db:start && npx prisma migrate reset --force",
+        "db:studio": "npx prisma studio"
     },
     "prisma": {
         "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
     },
     "dependencies": {
-        "@kinde-oss/kinde-auth-nextjs": "^2.5.1",
+        "@kinde-oss/kinde-auth-nextjs": "^2.5.6",
         "@prisma/client": "^6.4.0",
-        "next": "15.1.5",
+        "lucide-react": "^0.482.0",
+        "next": "^15.2.3",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "react-icons": "^5.5.0"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",

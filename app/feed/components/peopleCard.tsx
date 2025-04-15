@@ -1,4 +1,4 @@
-// TODO: People you may know component cord
+// TODO: People you may know component card
 
 export default function PeopleCard() {
     return (
