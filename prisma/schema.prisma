@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,15 +7,100 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Auth tables 
 model User {
-  id        String  @id
-  firstName String
-  lastName  String
-  username  String  @unique
-  email     String  @unique
-  picture   String?
+  id                  String            @id
+  firstName           String
+  lastName            String
+  username            String            @unique
+  email               String            @unique
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  picture             String?
+  bets                Bet[]
+  friends             Friend[]          @relation("UserFriends")
+  receivedRequests    FriendRequest[]   @relation("ReceivedRequests")
+  sentRequests        FriendRequest[]   @relation("SentRequests")
+  accountabilityGoals Goal[]            @relation("GoalAccountabilityPartner")
+  creatorGoals        Goal[]            @relation("GoalCreator")
+  participants        GoalParticipant[]
+}
 
+model FriendRequest {
+  id         String        @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     RequestStatus
+  createdAt  DateTime      @default(now())
+  receiver   User          @relation("ReceivedRequests", fields: [receiverId], references: [id])
+  sender     User          @relation("SentRequests", fields: [senderId], references: [id])
+
+  @@unique([senderId, receiverId])
+}
+
+model Friend {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
+
+  @@unique([userId, friendId])
+}
+
+model Goal {
+  id                      String            @id @default(uuid())
+  title                   String
+  description             String
+  stakes                  Int               @default(0)
+  isGroupGoal             Boolean           @default(false)
+  accountabilityPartnerId String?
+  creatorId               String
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  startDate               DateTime
+  endDate                 DateTime
+  status                  GoalStatus        @default(NOT_STARTED)
+  Bet                     Bet[]
+  accountabilityPartner   User?             @relation("GoalAccountabilityPartner", fields: [accountabilityPartnerId], references: [id])
+  creator                 User              @relation("GoalCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  participants            GoalParticipant[]
+}
+
+enum BetType {
+  FOR
+  AGAINST
+}
+
+model Bet {
+  id        String   @id @default(uuid())
+  amount    Float
+  goalId    String
+  userId    String
+  createdAt DateTime @default(now())
+  betType   BetType
+  goal      Goal     @relation(fields: [goalId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model GoalParticipant {
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  goal   Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goalId String
+  createdAt DateTime @default(now())
+  @@id([userId, goalId]) // Composite primary key to prevent duplicate entries
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
 }
