@@ -2,7 +2,7 @@ import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import PeopleCard from "./feed/components/peopleCard";
-import ProfileCard from "./feed/components/profileCard";
+import ProfileCard from "./dashboard/components/left-sidebar/profile-card";
 import GoalCard from "./feed/components/goalCard";
 import TrendingCard from "./feed/components/trendingCard";
 import PeopleGoalCard from "./feed/components/peoplegoalCard";

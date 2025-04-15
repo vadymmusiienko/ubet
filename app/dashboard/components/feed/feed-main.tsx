@@ -10,16 +10,18 @@ interface FeedProps {
 
 export default function Feed({ page, feedType }: FeedProps) {
     return (
-        <div className="w-full md:w-1/2 space-y-4">
-            {feedType === "engagements" ? (
-                <Suspense fallback={<LoadingGoals />}>
-                    <MyGoals />
-                </Suspense>
-            ) : (
-                <Suspense fallback={<LoadingGoals />}>
-                    <FeedGoals page={page} feedType={feedType} />
-                </Suspense>
-            )}
+        <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="p-4">
+                {feedType === "engagements" ? (
+                    <Suspense fallback={<LoadingGoals />}>
+                        <MyGoals />
+                    </Suspense>
+                ) : (
+                    <Suspense fallback={<LoadingGoals />}>
+                        <FeedGoals page={page} feedType={feedType} />
+                    </Suspense>
+                )}
+            </div>
         </div>
     );
 }
