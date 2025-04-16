@@ -4,7 +4,7 @@ import {
     LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Users, Bell, UserCircle, PlusCircle } from "lucide-react";
+import { Users, Bell, UserCircle, PlusCircle, Menu } from "lucide-react";
 import Link from "next/link";
 
 export default async function Navbar() {
@@ -13,75 +13,97 @@ export default async function Navbar() {
     const isLoggedIn = !!user;
 
     return (
-        <div className="w-full px-4 py-2">
-            <nav className="sticky top-0 left-0 w-full mx-auto flex items-center justify-between p-4 bg-black bg-opacity-50 backdrop-blur-lg rounded-lg">
-                {/* Left side - App name or logo could go here */}
-                {isLoggedIn && (
-                    <Link
-                        href="/"
-                        className="text-white font-bold hover:text-blue-400 transition"
-                    >
-                        Ubet
-                    </Link>
-                )}
-                <div className="flex items-center space-x-4">
+        <nav className="bg-githubDark text-gray-200 py-3 shadow-md sticky top-0 z-50">
+            <div className="container mx-auto px-4">
+                <div className="flex items-center justify-between">
+                    {/* Left side - Logo and App name */}
+                    <div className="flex items-center space-x-2">
+                        {isLoggedIn ? (
+                            <Link
+                                href="/dashboard"
+                                className="font-bold text-xl flex items-center"
+                            >
+                                <span className="bg-gray-600 text-white rounded-lg p-1 mr-2">
+                                    {/* TODO: Logo here */}
+                                </span>
+                                Ubet
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/"
+                                className="font-bold text-xl flex items-center"
+                            >
+                                <span className="bg-blue-600 text-white rounded-lg p-1 mr-2">
+                                    <Users size={20} />
+                                </span>
+                                Ubet
+                            </Link>
+                        )}
+                    </div>
+
                     {/* Center icons - only visible when logged in */}
                     {isLoggedIn && (
-                        <div className="flex space-x-8">
-                            {/* TODO: this is temporary */}
+                        <div className="hidden md:flex items-center space-x-6">
                             <Link
                                 href="/friends"
-                                className="text-white hover:text-blue-400 transition"
+                                className="flex flex-col items-center hover:bg-gray-800 px-3 py-1 rounded transition-colors"
                             >
-                                FRIENDS
-                            </Link>
-                            <Link
-                                href="/bet"
-                                className="text-white hover:text-blue-400 transition"
-                            >
-                                <Users className="w-6 h-6" />
-                            </Link>
-                            <Link
-                                href="/create-goal"
-                                className="text-white hover:text-blue-400 transition"
-                            >
-                                <PlusCircle className="w-6 h-6" />
+                                <Users size={20} />
+                                <span className="text-xs mt-1">FRIENDS</span>
                             </Link>
                             <Link
                                 href="/notifications"
-                                className="text-white hover:text-blue-400 transition"
+                                className="flex flex-col items-center hover:bg-gray-800 px-3 py-1 rounded transition-colors"
                             >
-                                <Bell className="w-6 h-6" />
+                                <Bell size={20} />
+                                <span className="text-xs mt-1">ALERTS</span>
                             </Link>
                             <Link
                                 href="/profile"
-                                className="text-white hover:text-blue-400 transition"
+                                className="flex flex-col items-center hover:bg-gray-800 px-3 py-1 rounded transition-colors"
                             >
-                                <UserCircle className="w-6 h-6" />
+                                <UserCircle size={20} />
+                                <span className="text-xs mt-1">PROFILE</span>
+                            </Link>
+                            <Link
+                                href="/create-goal"
+                                className="flex flex-col items-center hover:bg-gray-800 px-3 py-1 rounded transition-colors"
+                            >
+                                <PlusCircle size={20} />
+                                <span className="text-xs mt-1">CREATE</span>
                             </Link>
                         </div>
                     )}
 
+                    {/* Mobile menu button - only visible on small screens when logged in */}
+                    {isLoggedIn && (
+                        <div className="md:hidden">
+                            <button className="text-gray-200 hover:bg-gray-800 p-2 rounded-lg">
+                                <Menu size={24} />
+                            </button>
+                        </div>
+                    )}
+
                     {/* Right side Auth buttons */}
-                    <div className="flex space-x-4 justify-items-end">
+                    <div className="flex items-center space-x-4">
                         {!isLoggedIn && (
                             <>
-                                <LoginLink className="text-white hover:text-blue-400 transition">
+                                <LoginLink className="px-4 py-2 rounded-lg bg-gray-800 text-gray-200 font-medium hover:bg-gray-700 transition-colors">
                                     Log in
                                 </LoginLink>
-                                <RegisterLink className="text-white hover:text-blue-400 transition">
+                                <RegisterLink className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">
                                     Register
                                 </RegisterLink>
                             </>
                         )}
                         {isLoggedIn && (
-                            <LogoutLink className="text-white hover:text-blue-400 transition">
+                            <LogoutLink className="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
                                 Log out
                             </LogoutLink>
                         )}
                     </div>
                 </div>
-            </nav>
-        </div>
+            </div>
+        </nav>
     );
 }

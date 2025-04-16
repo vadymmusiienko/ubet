@@ -16,34 +16,38 @@ export default function GoalCard({
     description,
 }: GoalCardProps) {
     const [modalOpen, setModalOpen] = useState(false);
-
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
 
     return (
-        <div className="mx-4 space-y-4">
-            <div className="bg-white p-4 rounded-lg shadow-md">
-                <h2 className="text-lg font-bold">{title}</h2>
-                <p className="text-sm text-gray-500">
+        <div className="bg-githubDark border border-gray-700 rounded-md p-4 hover:border-gray-600 transition-colors duration-200">
+            <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-gray-100">{title}</h3>
+
+                <div className="text-sm text-gray-400">
                     {startDate} - {endDate}
-                </p>
-                <p className="mt-2">{description}</p>
+                </div>
+
+                <p className="text-gray-300">{description}</p>
+
                 <button
-                    className="text-blue-500 text-sm mt-2 hover:underline focus:outline-none"
                     onClick={openModal}
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center mt-2"
                 >
                     See more details →
                 </button>
             </div>
 
-            <GoalDetailModal
-                isOpen={modalOpen}
-                onClose={closeModal}
-                title={title}
-                startDate={startDate}
-                endDate={endDate}
-                description={description}
-            />
+            {modalOpen && (
+                <GoalDetailModal
+                    isOpen={modalOpen}
+                    onClose={closeModal}
+                    title={title}
+                    startDate={startDate}
+                    endDate={endDate}
+                    description={description}
+                />
+            )}
         </div>
     );
 }

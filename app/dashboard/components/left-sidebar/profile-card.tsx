@@ -40,8 +40,8 @@ export default async function ProfileCard() {
     } catch (error) {
         console.error("Error fetching user data:", error);
         return (
-            <div className="w-full sm:w-72 rounded-xl overflow-hidden shadow-lg bg-white text-center p-5">
-                <p className="text-gray-700">Unable to load profile data</p>
+            <div className="w-full sm:w-72 rounded-xl overflow-hidden shadow-lg bg-gray-900 text-center p-5 border border-gray-700">
+                <p className="text-gray-300">Unable to load profile data</p>
             </div>
         );
     }
@@ -63,9 +63,9 @@ export default async function ProfileCard() {
     const username = user?.username || "";
 
     return (
-        <div className="w-full rounded-xl overflow-hidden shadow-lg bg-white text-center transition-all hover:shadow-xl">
+        <div className="w-full rounded-xl overflow-hidden shadow-lg bg-githubDark text-center transition-all hover:shadow-xl border border-gray-700">
             <div className="px-4 py-5">
-                <h1 className="font-bold text-2xl mb-3 text-gray-800">
+                <h1 className="font-bold text-2xl mb-3 text-gray-100">
                     {fullName}
                 </h1>
 
@@ -81,19 +81,19 @@ export default async function ProfileCard() {
                 </div>
 
                 <div className="mb-4">
-                    <p className="text-gray-600 text-sm">@{username}</p>
+                    <p className="text-gray-400 text-sm">@{username}</p>
                 </div>
 
                 <div className="flex justify-between mb-6 px-2">
                     <div className="text-center">
-                        <h2 className="font-semibold text-gray-800 text-sm">
+                        <h2 className="font-semibold text-gray-300 text-sm">
                             Total Bets
                         </h2>
                         <p
                             className={`text-lg ${
                                 totalBetsAmount >= 0
-                                    ? "text-green-600"
-                                    : "text-red-600"
+                                    ? "text-green-400"
+                                    : "text-red-400"
                             }`}
                         >
                             ${totalBetsAmount.toFixed(2)}
@@ -101,17 +101,17 @@ export default async function ProfileCard() {
                     </div>
 
                     <div className="text-center">
-                        <h2 className="font-semibold text-gray-800 text-sm">
+                        <h2 className="font-semibold text-gray-300 text-sm">
                             Friends
                         </h2>
-                        <p className="text-lg text-blue-600">{friendsCount}</p>
+                        <p className="text-lg text-blue-400">{friendsCount}</p>
                     </div>
                 </div>
 
                 <Link href={`/profile/${user?.id}`} className="block">
                     <button
-                        className="bg-purple-700 text-white py-2 px-8 rounded-full w-full
-                                  transition-all hover:bg-purple-800 focus:ring-2 focus:ring-purple-500 
+                        className="bg-blue-600 text-white py-2 px-8 rounded-full w-full
+                                  transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 
                                   focus:outline-none"
                         aria-label="Visit profile"
                     >
