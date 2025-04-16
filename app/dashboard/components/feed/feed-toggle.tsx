@@ -26,7 +26,7 @@ export default function FeedToggle({ currentFeedType }: FeedToggleProps) {
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         currentFeedType === "engagements"
                             ? "bg-blue-500 text-white shadow-md"
-                            : "bg-transparent text-gray-600 hover:bg-gray-200"
+                            : "bg-transparent text-gray-600 hover:bg-gray-400"
                     }`}
                 >
                     My Engagements
@@ -36,7 +36,7 @@ export default function FeedToggle({ currentFeedType }: FeedToggleProps) {
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         currentFeedType === "feed"
                             ? "bg-blue-500 text-white shadow-md"
-                            : "bg-transparent text-gray-600 hover:bg-gray-200"
+                            : "bg-transparent text-gray-600 hover:bg-gray-400"
                     }`}
                 >
                     My Feed

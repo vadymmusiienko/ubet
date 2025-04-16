@@ -13,7 +13,7 @@ export default async function Home() {
     return (
         <>
             <div className="flex min-h-screen flex-col">
-                <main className="flex w-full flex-1 flex-col bg-gray-100 items-center">
+                <main className="flex w-full flex-1 flex-col items-center text-gray-100">
                     <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
                         <h1 className="text-6xl font-bold italic mb-6">UBet</h1>
                         <h2 className="text-4xl font-bold mb-6">
