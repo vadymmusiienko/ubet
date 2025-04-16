@@ -7,7 +7,11 @@ export default {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                githubDark: "#1B1F23",
+            },
+        },
     },
     plugins: [],
 } satisfies Config;

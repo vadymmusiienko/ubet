@@ -12,7 +12,7 @@ export default async function PeopleYouMayKnow() {
     ];
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md">
+        <div className="bg-githubDark p-4 rounded-lg shadow-md text-gray-100">
             <h2 className="text-lg font-bold">People you may know</h2>
             <ul className="text-sm mt-2">
                 {people.map((person, index) => (

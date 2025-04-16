@@ -10,7 +10,7 @@ interface FeedProps {
 
 export default function Feed({ page, feedType }: FeedProps) {
     return (
-        <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="w-full rounded-xl shadow-sm overflow-hidden">
             <div className="p-4">
                 {feedType === "engagements" ? (
                     <Suspense fallback={<LoadingGoals />}>

@@ -19,7 +19,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
     const feedType = resolvedSearchParams?.feedType || "feed";
 
     return (
-        <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 bg-gray-50">
+        <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 ">
             {/* Feed Toggle Positioned at the Top */}
             <div className="w-full max-w-6xl mb-6">
                 <FeedToggle currentFeedType={feedType} />
