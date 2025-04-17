@@ -1,6 +1,7 @@
 import { getGoals } from "../../actions";
 import GoalCard from "./goal-card";
 import ClientPaginationControls from "./client-pagination-controls";
+import Link from "next/link";
 
 interface GoalsProps {
     page: number;
@@ -23,14 +24,17 @@ export default async function FeedGoals({ page, feedType }: GoalsProps) {
 
     if (goals.length === 0) {
         return (
-            <div className="w-full p-8 bg-gray-50 border border-gray-200 rounded-lg text-center">
+            <div className="w-full p-8 bg-githubDark border border-gray-200 rounded-lg text-center">
                 <p className="text-gray-600 mb-4">
                     No goals found. Ready to set your first achievement?
                 </p>
                 {/* Link to the goal creation page */}
-                <button className="bg-purple-700 hover:bg-purple-800 transition-colors text-white px-6 py-2 rounded-full focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                <Link
+                    href="/create-goal"
+                    className="bg-purple-700 hover:bg-purple-800 transition-colors text-white px-6 py-2 rounded-full focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
                     Create Goal
-                </button>
+                </Link>
             </div>
         );
     }
