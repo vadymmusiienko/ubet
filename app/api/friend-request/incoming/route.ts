@@ -1,11 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function GET() {
-  const CURRENT_USER_ID = "testid6";
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  const userId = user!.id;
 
   const requests = await prisma.friendRequest.findMany({
-    where: { receiverId: CURRENT_USER_ID, status: "PENDING" },
+    where: { receiverId: userId, status: "PENDING" },
     include: { sender: true },
   });
 
