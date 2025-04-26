@@ -3,6 +3,7 @@ import { GoalCardProps } from "./goal-card";
 // make it pretties, add a button to bet
 // you can access the database here to get the goal details
 
+
 export default function GoalDetailModal({
     isOpen,
     onClose,
@@ -12,6 +13,10 @@ export default function GoalDetailModal({
     description,
 }: GoalCardProps & { isOpen: boolean; onClose: () => void }) {
     if (!isOpen) return null;
+
+  const handleBet = () => {
+    console.log(`Betting on: ${title}`);
+  };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -41,6 +46,12 @@ export default function GoalDetailModal({
                         onClick={onClose}
                     >
                         Close
+                    </button>
+                    <button
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                    onClick={handleBet}
+                    >
+                        Bet on Goal
                     </button>
                 </div>
             </div>
