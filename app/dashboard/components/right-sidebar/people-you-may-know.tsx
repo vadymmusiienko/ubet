@@ -8,13 +8,13 @@ import { FriendRequestButton } from "./friend-request-button";
 
 export default async function PeopleYouMayKnow() {
   // Simulate fetching data
-  const { suggestedFriends } = await getSuggestedFriends();
+  const { users } = await getSuggestedFriends();
 
   return (
     <div className="bg-githubDark p-4 rounded-lg shadow-md text-gray-100">
       <h2 className="text-lg font-bold">People you may know</h2>
       <ul className="flex flex-col gap-4 text-sm mt-2">
-        {suggestedFriends.map((friend, index) => (
+        {users.map((friend, index) => (
           <li className="flex items-center justify-between" key={index}>
             <div>
               <div className="max-w-[150px] truncate font-medium">

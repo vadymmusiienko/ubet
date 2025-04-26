@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-interface SuggestedFriend {
+interface Users {
   id: string;
   firstName: string;
   lastName: string;
@@ -9,19 +9,19 @@ interface SuggestedFriend {
   picture: string | null;
 }
 
-interface SuggestedFriendsResult {
-  suggestedFriends: SuggestedFriend[];
+interface UserResult {
+  users: Users[];
   error?: string;
 }
 
-export async function getSuggestedFriends(): Promise<SuggestedFriendsResult> {
+export async function getSuggestedFriends(): Promise<UserResult> {
   try {
     const { getUser } = getKindeServerSession();
     const sessionUser = await getUser();
 
     if (!sessionUser?.id) {
       return {
-        suggestedFriends: [],
+        users: [],
         error: "Not authenticated",
       };
     }
@@ -83,7 +83,7 @@ export async function getSuggestedFriends(): Promise<SuggestedFriendsResult> {
     }
 
     // get suggested friends
-    const suggestedFriends = await prisma.user.findMany({
+    const users = await prisma.user.findMany({
       where: { id: { in: candidateIds } },
       select: {
         id: true,
@@ -94,11 +94,54 @@ export async function getSuggestedFriends(): Promise<SuggestedFriendsResult> {
       },
     });
 
-    return { suggestedFriends };
+    return { users };
   } catch (error) {
     console.error("Failed to fetch suggested friends:", error);
     return {
-      suggestedFriends: [],
+      users: [],
+      error: "Failed to load suggested friends. Please try again later.",
+    };
+  }
+}
+
+export async function getFriendsList(): Promise<UserResult> {
+  try {
+    const { getUser } = getKindeServerSession();
+    const sessionUser = await getUser();
+
+    if (!sessionUser?.id) {
+      return {
+        users: [],
+        error: "Not authenticated",
+      };
+    }
+
+    const currentUserId = sessionUser.id;
+
+    const friends = await prisma.friend.findMany({
+      where: { userId: currentUserId },
+      select: { friendId: true },
+    });
+
+    const friendIds = friends.map((f) => f.friendId);
+
+    const users = await prisma.user.findMany({
+      where: { id: { in: friendIds } },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        picture: true,
+      },
+      take: 4,
+    });
+
+    return { users };
+  } catch (error) {
+    console.error("Failed to fetch suggested friends:", error);
+    return {
+      users: [],
       error: "Failed to load suggested friends. Please try again later.",
     };
   }
