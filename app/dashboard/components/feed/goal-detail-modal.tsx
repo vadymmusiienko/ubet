@@ -1,4 +1,5 @@
 import { GoalCardProps } from "./goal-card";
+import Link from "next/link";
 export default function GoalDetailModal({
     isOpen,
     onClose,
@@ -30,25 +31,17 @@ export default function GoalDetailModal({
                     <p className="text-gray-300">{description}</p>
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
-                    <button
+                    <Link
                         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                        onClick={() => {
-                            /* Add bet functionality here */
-                        }}
+                        href={`/bet/${encodeURIComponent(title.toLowerCase())}`}
                     >
                         Place Bet
-                    </button>
+                    </Link>
                     <button
                         className="bg-gray-700 text-gray-200 px-4 py-2 rounded hover:bg-gray-600"
                         onClick={onClose}
                     >
                         Close
-                    </button>
-                    <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                    onClick={handleBet}
-                    >
-                        Bet on Goal
                     </button>
                 </div>
             </div>
