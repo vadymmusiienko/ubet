@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { respondToFriendRequest } from "@/app/utils/friendRequests";
+import { respondToFriendRequest } from "@/app/friends/utils/friendRequests";
 
 export default function RespondToFriendRequest({
   requestId,

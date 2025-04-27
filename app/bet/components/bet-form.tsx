@@ -39,19 +39,19 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-md p-6 border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
+        <div className="w-full max-w-md mx-auto bg-githubDark rounded-lg shadow-md p-6 border border-gray-700">
+            <h2 className="text-xl font-bold text-gray-200 mb-4">
                 Place Your Bet
             </h2>
 
             {error && (
-                <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+                <div className="mb-4 p-3 bg-red-900 border-l-4 border-red-500 text-red-200 rounded">
                     <p>{error}</p>
                 </div>
             )}
 
             {success && (
-                <div className="mb-4 p-3 bg-green-50 border-l-4 border-green-500 text-green-700 rounded">
+                <div className="mb-4 p-3 bg-green-900 border-l-4 border-green-500 text-green-200 rounded">
                     <p>{success}</p>
                 </div>
             )}
@@ -60,13 +60,13 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                 <div className="space-y-2">
                     <label
                         htmlFor="amount"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-200"
                     >
                         Bet Amount ($)
                     </label>
                     <div className="relative mt-1 rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">$</span>
+                            <span className="text-gray-400 sm:text-sm">$</span>
                         </div>
                         <input
                             type="number"
@@ -77,7 +77,7 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                             min="0"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            className="block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            className="block w-full pl-7 pr-12 py-2 bg-gray-800 border border-gray-700 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-200 sm:text-sm"
                             disabled={isPending}
                         />
                     </div>
@@ -86,7 +86,7 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                 <div className="space-y-2">
                     <label
                         htmlFor="betType"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-200"
                     >
                         Bet Type
                     </label>
@@ -97,7 +97,7 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md ${
                                 betType === "FOR"
                                     ? "bg-blue-600 text-white"
-                                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                             }`}
                             disabled={isPending}
                         >
@@ -109,7 +109,7 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md ${
                                 betType === "AGAINST"
                                     ? "bg-red-600 text-white"
-                                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                             }`}
                             disabled={isPending}
                         >
@@ -123,11 +123,11 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                     disabled={isPending}
                     className={`w-full rounded-md px-4 py-2 text-sm font-medium text-white ${
                         isPending
-                            ? "bg-gray-400 cursor-not-allowed"
+                            ? "bg-gray-600 cursor-not-allowed"
                             : betType === "FOR"
                             ? "bg-blue-600 hover:bg-blue-700"
                             : "bg-red-600 hover:bg-red-700"
-                    } focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${
                         betType === "FOR"
                             ? "focus:ring-blue-500"
                             : "focus:ring-red-500"
@@ -163,7 +163,7 @@ export default function BetForm({ userId, goalId }: BetFormProps) {
                 </button>
             </form>
 
-            <p className="mt-4 text-xs text-gray-500">
+            <p className="mt-4 text-xs text-gray-400">
                 Note: All bets are final and cannot be changed after submission.
             </p>
         </div>

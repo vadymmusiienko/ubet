@@ -3,24 +3,31 @@
 // Add button to search for friends (takes you to the search page?)
 // Add button to request to be friends with each displayed user
 
-export default async function PeopleYouMayKnow() {
-    // Simulate fetching data
-    const people = [
-        { name: "Angie Zhou", username: "@angiezh" },
-        { name: "John Smith", username: "@johnsmith" },
-        { name: "Jane Doe", username: "@janedoe" },
-    ];
+import { getSuggestedFriends } from "./actions";
+import { FriendRequestButton } from "./friend-request-button";
 
-    return (
-        <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-bold">People you may know</h2>
-            <ul className="text-sm mt-2">
-                {people.map((person, index) => (
-                    <li key={index}>
-                        {person.name} {person.username}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+export default async function PeopleYouMayKnow() {
+  // Simulate fetching data
+  const { users } = await getSuggestedFriends();
+
+  return (
+    <div className="bg-githubDark p-4 rounded-lg shadow-md text-gray-100">
+      <h2 className="text-lg font-bold">People you may know</h2>
+      <ul className="flex flex-col gap-4 text-sm mt-2">
+        {users.map((friend, index) => (
+          <li className="flex items-center justify-between" key={index}>
+            <div>
+              <div className="max-w-[150px] truncate font-medium">
+                {friend.firstName} {friend.lastName}
+              </div>
+              <div className="max-w-[150px] truncate text-sm text-gray-400">
+                @{friend.username}
+              </div>
+            </div>
+            <FriendRequestButton receiverId={friend.id} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

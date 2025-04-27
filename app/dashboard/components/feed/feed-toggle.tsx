@@ -20,13 +20,13 @@ export default function FeedToggle({ currentFeedType }: FeedToggleProps) {
     return (
         <div className="space-y-4 w-full max-w-md mx-auto">
             {/* Feed Toggle Buttons */}
-            <div className="flex justify-center bg-gray-100 p-1 rounded-lg">
+            <div className="flex justify-center bg-githubDark p-1 rounded-lg">
                 <Link
                     href={`${pathname}?${createQueryString("engagements")}`}
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         currentFeedType === "engagements"
                             ? "bg-blue-500 text-white shadow-md"
-                            : "bg-transparent text-gray-600 hover:bg-gray-200"
+                            : "bg-transparent text-gray-600 hover:bg-gray-400"
                     }`}
                 >
                     My Engagements
@@ -36,7 +36,7 @@ export default function FeedToggle({ currentFeedType }: FeedToggleProps) {
                     className={`px-4 py-1.5 rounded-md transition-all duration-200 font-medium ${
                         currentFeedType === "feed"
                             ? "bg-blue-500 text-white shadow-md"
-                            : "bg-transparent text-gray-600 hover:bg-gray-200"
+                            : "bg-transparent text-gray-600 hover:bg-gray-400"
                     }`}
                 >
                     My Feed
