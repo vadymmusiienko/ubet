@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { sendFriendRequest } from "@/app/utils/friendRequests";
+import { sendFriendRequest } from "@/app/friends/utils/friendRequests";
 
 export default function AddFriendButton({
   receiverId,

@@ -1,20 +1,28 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function GET() {
-  const CURRENT_USER_ID = "testid6";
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  const userId = user!.id;
 
   const sent = await prisma.friendRequest.findMany({
-    where: { senderId: CURRENT_USER_ID },
+    where: { senderId: userId },
     select: { receiverId: true },
   });
   const received = await prisma.friendRequest.findMany({
-    where: { receiverId: CURRENT_USER_ID },
+    where: { receiverId: userId },
     select: { senderId: true },
   });
 
   const excluded = [
-    CURRENT_USER_ID,
+    userId,
     ...sent.map((r) => r.receiverId),
     ...received.map((r) => r.senderId),
   ];
