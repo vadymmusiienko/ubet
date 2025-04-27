@@ -1,7 +1,9 @@
 "use client";
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import { createGoal } from "../actions";
 
-// Define error types for proper type checking
+// Define types for better type checking
 interface FormErrors {
     goalTitle?: string;
     startDate?: string;
@@ -9,7 +11,12 @@ interface FormErrors {
     stakes?: string;
 }
 
-export default function CreateGoalForm() {
+interface CreateGoalFormProps {
+    userId: string; // The current user's ID
+}
+
+export default function CreateGoalForm({ userId }: CreateGoalFormProps) {
+    const router = useRouter();
     const [goalType, setGoalType] = useState<"individual" | "group">(
         "individual"
     );
@@ -19,8 +26,12 @@ export default function CreateGoalForm() {
     const [endDate, setEndDate] = useState<string>("");
     const [stakes, setStakes] = useState<number>(25);
     const [canInviteFriends, setCanInviteFriends] = useState<boolean>(false);
+    const [accountabilityPartnerId, setAccountabilityPartnerId] =
+        useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<FormErrors>({});
+    const [successMessage, setSuccessMessage] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     // Set default dates when component mounts
     useEffect(() => {
@@ -58,23 +69,43 @@ export default function CreateGoalForm() {
         e.preventDefault();
         if (validateForm()) {
             setIsSubmitting(true);
-            try {
-                console.log("Form submitted successfully", {
-                    goalType,
-                    goalTitle,
-                    goalDetails,
-                    startDate,
-                    endDate,
-                    stakes,
-                    canInviteFriends,
-                });
-                // TODO: Handle form submission logic (e.g., Database call)
+            setSuccessMessage("");
+            setErrorMessage("");
 
-                // Handle success - could reset form or redirect
-                alert("Goal created successfully!");
-                resetForm();
+            try {
+                // Create goal data object
+                const goalData = {
+                    title: goalTitle,
+                    description: goalDetails,
+                    stakes,
+                    isGroupGoal: goalType === "group",
+                    accountabilityPartnerId: accountabilityPartnerId || null,
+                    creatorId: userId,
+                    startDate: new Date(startDate).toISOString(),
+                    endDate: new Date(endDate).toISOString(),
+                    canInviteFriends,
+                };
+
+                const result = await createGoal(goalData);
+
+                if (result.success) {
+                    setSuccessMessage("Goal created successfully!");
+                    resetForm();
+                    // Redirect to goal page after a short delay
+                    setTimeout(() => {
+                        router.push("dashboard?feedType=engagements");
+                    }, 500);
+                } else {
+                    setErrorMessage(
+                        result.error ||
+                            "Failed to create goal. Please try again."
+                    );
+                }
             } catch (error) {
                 console.error("Error submitting form:", error);
+                setErrorMessage(
+                    "An unexpected error occurred. Please try again."
+                );
             } finally {
                 setIsSubmitting(false);
             }
@@ -93,6 +124,7 @@ export default function CreateGoalForm() {
         setEndDate(formatDateForInput(tomorrow));
         setStakes(25);
         setCanInviteFriends(false);
+        setAccountabilityPartnerId("");
         setErrors({});
     };
 
@@ -101,6 +133,18 @@ export default function CreateGoalForm() {
             onSubmit={handleSubmit}
             className="space-y-4 w-full max-w-md mx-auto"
         >
+            {successMessage && (
+                <div className="bg-green-600 bg-opacity-20 border border-green-500 text-green-300 px-4 py-2 rounded-lg text-sm">
+                    {successMessage}
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="bg-red-600 bg-opacity-20 border border-red-500 text-red-300 px-4 py-2 rounded-lg text-sm">
+                    {errorMessage}
+                </div>
+            )}
+
             <div className="flex justify-center bg-githubDark p-1 rounded-lg">
                 <button
                     type="button"
@@ -167,7 +211,7 @@ export default function CreateGoalForm() {
                     onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                         setGoalDetails(e.target.value)
                     }
-                    rows={2}
+                    rows={3}
                 />
             </div>
 
@@ -243,6 +287,7 @@ export default function CreateGoalForm() {
                     type="range"
                     min="0"
                     max="50"
+                    step="5"
                     value={stakes}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setStakes(parseInt(e.target.value))
@@ -266,12 +311,29 @@ export default function CreateGoalForm() {
                         <button
                             type="button"
                             className="bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg text-gray-300 font-medium text-xs flex items-center transition-colors border border-gray-700"
+                            onClick={() => {
+                                // This would typically open a modal to select accountability partner
+                                // For now, let's just simulate this with a mock ID
+                                setAccountabilityPartnerId(
+                                    accountabilityPartnerId
+                                        ? ""
+                                        : "mock-partner-id"
+                                );
+                            }}
                         >
-                            <span className="mr-1">+</span> Partner
+                            <span className="mr-1">
+                                {accountabilityPartnerId ? "✓" : "+"}
+                            </span>{" "}
+                            Partner
                         </button>
                         <button
                             type="button"
-                            className="bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg text-gray-300 font-medium text-xs flex items-center transition-colors border border-gray-700"
+                            className={`bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg text-gray-300 font-medium text-xs flex items-center transition-colors border border-gray-700 ${
+                                goalType !== "group"
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                            }`}
+                            disabled={goalType !== "group"}
                         >
                             <span className="mr-1">+</span> Friends
                         </button>
@@ -284,11 +346,11 @@ export default function CreateGoalForm() {
                             onChange={() =>
                                 setCanInviteFriends(!canInviteFriends)
                             }
-                            className="w-3 h-3 text-blue-500 bg-gray-800 border-gray-600 rounded focus:ring-blue-500"
+                            className="w-4 h-4 text-blue-500 bg-gray-800 border-gray-600 rounded focus:ring-blue-500"
                         />
                         <label
                             htmlFor="canInviteFriends"
-                            className="ml-1 text-gray-300 text-xs"
+                            className="ml-2 text-gray-300 text-xs"
                         >
                             Allow invites
                         </label>
@@ -299,14 +361,21 @@ export default function CreateGoalForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full font-medium py-2 px-4 rounded-lg shadow-md transition-colors text-center
+                className={`w-full font-medium py-2.5 px-4 rounded-lg shadow-md transition-colors text-center
                     ${
                         isSubmitting
                             ? "bg-blue-500 opacity-60 cursor-not-allowed"
                             : "bg-blue-600 hover:bg-blue-700 text-white"
                     }`}
             >
-                {isSubmitting ? "Processing..." : "Pay Now"}
+                {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Processing...
+                    </div>
+                ) : (
+                    "Create Goal"
+                )}
             </button>
         </form>
     );
