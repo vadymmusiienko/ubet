@@ -2,7 +2,6 @@
 import { notFound } from "next/navigation";
 import { getGoalByTitle } from "./actions";
 import BetPage from "./bet-page";
-//import { auth } from "@/lib/auth"; // Assuming you have an auth library
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function BetPageRoute({
