@@ -1,7 +1,5 @@
 import { GoalCardProps } from "./goal-card";
-// TODO: Aneesh add all the relevant props to the GoalCardProps interface and display it
-// make it pretties, add a button to bet
-// you can access the database here to get the goal details
+import Link from "next/link";
 export default function GoalDetailModal({
     isOpen,
     onClose,
@@ -33,14 +31,12 @@ export default function GoalDetailModal({
                     <p className="text-gray-300">{description}</p>
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
-                    <button
+                    <Link
                         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                        onClick={() => {
-                            /* Add bet functionality here */
-                        }}
+                        href={`/bet/${encodeURIComponent(title.toLowerCase())}`}
                     >
                         Place Bet
-                    </button>
+                    </Link>
                     <button
                         className="bg-gray-700 text-gray-200 px-4 py-2 rounded hover:bg-gray-600"
                         onClick={onClose}
