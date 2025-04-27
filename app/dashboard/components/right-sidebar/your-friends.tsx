@@ -33,12 +33,11 @@ export default async function YourFriends() {
       ) : (
         <p className="text-gray-400 mb-4">No friends yet.</p>
       )}
-
       <Link
-        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-full"
-        href="\friends"
+        href="/friends"
+        className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-3xl text-center"
       >
-        {users.length !== 0 ? "See All Friends" : "View Friends Page"}
+        {users.length <= 4 ? "View All Friends" : "View Friends Page"}
       </Link>
     </div>
   );
